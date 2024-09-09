@@ -6,6 +6,10 @@ require_once('../inc/navbar.php');
 require_once('../inc/foot.php');
 require_once('../config/config.php');
 
+if (isset($_POST) && empty($_POST)) {
+  header('Location: ../index.php');
+}
+
 $groupe_id = $_POST['groupe'] ?? '';
 
 $dsn = DB_ENGINE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
@@ -33,7 +37,7 @@ try {
   die($e->getMessage());
 }
 
-var_dump($groupe);
+var_dump($_POST);
 
 ?>
 

@@ -1,7 +1,6 @@
 <?php
 $title = 'Acceuil';
 require_once('./inc/head.php');
-require_once('./inc/navbar.php');
 require_once('./inc/foot.php');
 require_once('./config/config.php');
 
@@ -32,16 +31,6 @@ try {
 }
 
 asort($groupes);
-
-// var_dump($nains);
-// var_dump($villes);
-// var_dump($groupes);
-// var_dump($tavernes);
-
-
-
-
-
 
 
 ?>

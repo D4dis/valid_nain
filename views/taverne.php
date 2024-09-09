@@ -6,6 +6,10 @@ require_once('../inc/navbar.php');
 require_once('../inc/foot.php');
 require_once('../config/config.php');
 
+if (isset($_POST) && empty($_POST)) {
+  header('Location: ../index.php');
+}
+
 $taverne_id = $_POST['taverne'] ?? '';
 
 $dsn = DB_ENGINE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
