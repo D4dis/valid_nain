@@ -40,7 +40,6 @@ try {
 
 asort($groupes);
 
-var_dump($_POST['groupeEdit']);
 
 ?>
 
