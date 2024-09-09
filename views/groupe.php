@@ -6,11 +6,11 @@ require_once('../inc/navbar.php');
 require_once('../inc/foot.php');
 require_once('../config/config.php');
 
-if (isset($_POST) && empty($_POST)) {
+if (isset($_GET) && empty($_GET)) {
   header('Location: ../index.php');
 }
 
-$groupe_id = $_POST['groupe'] ?? '';
+$groupe_id = $_GET['groupe'] ?? '';
 
 $dsn = DB_ENGINE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
 
