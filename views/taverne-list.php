@@ -37,7 +37,7 @@ try {
       <?php foreach ($tavernes as $taverne) : ?>
         <tr>
           <th scope="row"><?= $taverne['t_id'] ?></th>
-          <td><?= $taverne['t_nom'] ?></td>
+          <td><a href="taverne.php?taverne=<?= $taverne['t_id'] ?>"><?= $taverne['t_nom'] ?></a></td>
         </tr>
       <?php endforeach; ?>
     </tbody>

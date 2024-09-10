@@ -37,7 +37,7 @@ try {
       <?php foreach ($nains as $nain) : ?>
         <tr>
           <th scope="row"><?= $nain['n_id'] ?></th>
-          <td><?= $nain['n_nom'] ?></td>
+          <td><a href="nain.php?nain=<?= $nain['n_id'] ?>"><?= $nain['n_nom'] ?></a></td>
         </tr>
       <?php endforeach; ?>
     </tbody>

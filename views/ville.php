@@ -57,7 +57,6 @@ try {
   die($e->getMessage());
 }
 
-var_dump($tunnels);
 
 ?>
 

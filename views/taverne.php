@@ -29,7 +29,6 @@ try {
   die($e->getMessage());
 }
 
-var_dump($taverne);
 
 ?>
 

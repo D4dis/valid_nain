@@ -36,6 +36,14 @@ try {
   $requestNain->execute();
   $nains = $requestNain->fetchAll(PDO::FETCH_ASSOC);
   $requestNain->closeCursor();
+
+  $requestInfoUpdate = $pdo->prepare('SELECT g_id, tunnel.t_id tun_id, t_nom, taverne.t_id tav_id
+                                FROM groupe
+                                JOIN tunnel ON groupe.g_tunnel_fk = tunnel.t_id
+                                JOIN taverne ON groupe.g_taverne_fk = taverne.t_id');
+  $requestInfoUpdate->execute();
+  $InfosUpdate = $requestInfoUpdate->fetchAll(PDO::FETCH_ASSOC);
+  $requestInfoUpdate->closeCursor();
 } catch (PDOException $e) {
   die($e->getMessage());
 }
@@ -76,35 +84,48 @@ var_dump($_POST);
   <?php if (!empty($groupe['g_debuttravail'])) : ?>
     <p class="text-center display-5">Travail de <?= $groupe['g_debuttravail'] ?> à <?= $groupe['g_fintravail'] ?> dans le tunnel <a href="ville.php?ville=<?= $groupe['v_departid'] ?>"><?= $groupe['v_depart'] ?></a> à <a href="ville.php?ville=<?= $groupe['v_arriveid'] ?>"><?= $groupe['v_arrive'] ?></a> (<?= $groupe['t_progres'] == 100 ? 'Entretiennent' : $groupe['t_progres'] . ' %' ?>)</p>
   <?php endif; ?>
-  <form action="" method="post">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-        Changer horaire, tunnel et taverne
-      </button>
+  
+  <form class="d-flex justify-content-center" action="" method="post">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+      Changer horaire, tunnel et taverne
+    </button>
 
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Changer le groupe</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <select class="form-select form-select-sm mb-3" aria-label="Small select example" name="groupeEdit">
-                <option selected disabled>Changer le groupe</option>
-                <?php foreach ($groupes as $groupe) : ?>
-                  <option value="<?= $groupe['g_id'] ?>"><?= $groupe['g_id'] ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermez</button>
-              <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Changer le groupe</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <select class="form-select form-select-sm mb-3" aria-label="Small select example" name="groupeEdit">
+              <option selected disabled>Changer le groupe</option>
+              <?php foreach ($groupes as $groupe) : ?>
+                <option value="<?= $groupe['g_id'] ?>"><?= $groupe['g_id'] ?></option>
+              <?php endforeach; ?>
+            </select>
+            <select class="form-select form-select-sm mb-3" aria-label="Small select example" name="tunnelEdit">
+              <option selected disabled>Changer le tunnel</option>
+              <?php foreach ($groupes as $groupe) : ?>
+                <option value="<?= $groupe['g_id'] ?>"><?= $groupe['g_id'] ?></option>
+              <?php endforeach; ?>
+            </select>
+            <select class="form-select form-select-sm mb-3" aria-label="Small select example" name="taverneEdit">
+              <option selected disabled>Changer la taverne</option>
+              <?php foreach ($groupes as $groupe) : ?>
+                <option value="<?= $groupe['g_id'] ?>"><?= $groupe['g_id'] ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Sauvegarder</button>
           </div>
         </div>
       </div>
-    </form>
+    </div>
+  </form>
 
 </div>

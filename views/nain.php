@@ -11,19 +11,30 @@ if (isset($_GET) && empty($_GET)) {
 }
 
 $nain_id = $_GET['nain'] ?? '';
+$groupeEdit = $_POST['groupeEdit'] ?? '';
 
 $dsn = DB_ENGINE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
 
 try {
   $pdo = new PDO(DSN, DB_USER, DB_PWD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-  $request = $pdo->prepare('SELECT n_nom, n_barbe, v_depart.v_nom v_depart, v_arrive.v_nom v_arrive, t_nom, g_debuttravail, g_fintravail , g_id 
+  if (isset($_POST['groupeEdit']) && !empty($_POST['groupeEdit'])) {
+    $requestUpdate = $pdo->prepare('UPDATE nain SET n_groupe_fk = :groupeEdit WHERE n_id = :nain_id');
+    $requestUpdate->bindValue('nain_id', $nain_id);
+    $requestUpdate->bindValue('groupeEdit', $groupeEdit);
+    $requestUpdate->execute();
+    $groupes = $requestUpdate->fetchAll(PDO::FETCH_ASSOC);
+    $requestUpdate->closeCursor();
+  }
+
+  $request = $pdo->prepare('SELECT n_nom, n_barbe, v_depart.v_nom v_depart, v_depart.v_id v_departid, v_arrive.v_nom v_arrive, v_arrive.v_id v_arriveid, t_nom, taverne.t_id tav_id, g_debuttravail, g_fintravail , g_id, v_natale.v_nom v_natale, v_natale.v_id v_nataleid
                             FROM nain
                             LEFT JOIN groupe ON nain.n_groupe_fk = groupe.g_id
                             LEFT JOIN taverne ON groupe.g_taverne_fk = taverne.t_id
                             LEFT JOIN tunnel ON groupe.g_tunnel_fk = tunnel.t_id
                             LEFT JOIN ville v_depart ON tunnel.t_villedepart_fk = v_depart.v_id
                             LEFT JOIN ville v_arrive ON tunnel.t_villearrivee_fk = v_arrive.v_id
+                            LEFT JOIN ville v_natale ON nain.n_ville_fk = v_natale.v_id
                             WHERE n_id = :nain_id');
   $request->bindValue('nain_id', $nain_id);
   $request->execute();
@@ -33,13 +44,12 @@ try {
   $requestGroupe = $pdo->prepare('SELECT g_id FROM groupe');
   $requestGroupe->execute();
   $groupes = $requestGroupe->fetchAll(PDO::FETCH_ASSOC);
-  $request->closeCursor();
+  $requestGroupe->closeCursor();
 } catch (PDOException $e) {
   die($e->getMessage());
 }
 
 asort($groupes);
-
 
 ?>
 
@@ -49,13 +59,18 @@ asort($groupes);
     <div class="card border-0 shadow-sm" style="width: 20rem;">
       <div class="card-body">
         <p class="card-title">Taille barbe <?= $nain['n_barbe'] ?> cm</p>
+        <p class="card-title">Originaire de <a href="ville.php?ville=<?= $nain['v_nataleid'] ?>"><?= $nain['v_natale'] ?></a></p>
         <?php if (!empty($nain['t_nom'])) : ?>
-          <p class="card-title">Boit dans <?= $nain['t_nom'] ?></p>
+          <p class="card-title">Boit dans <a href="taverne.php?taverne=<?= $nain['tav_id'] ?>"><?= $nain['t_nom'] ?></a></p>
         <?php endif; ?>
         <?php if (!empty($nain['g_debuttravail'])) : ?>
-          <p class="card-title">Travail de <?= $nain['g_debuttravail'] ?> à <?= $nain['g_fintravail'] ?> dans le tunnel <?= $nain['v_depart'] ?> à <?= $nain['v_arrive'] ?></p>
+          <p class="card-title">Travail de <?= $nain['g_debuttravail'] ?> à <?= $nain['g_fintravail'] ?> dans le tunnel <a href="ville.php?ville=<?= $nain['v_departid'] ?>"><?= $nain['v_depart'] ?></a> à <a href="ville.php?ville=<?= $nain['v_arriveid'] ?>"><?= $nain['v_arrive'] ?></a></p>
         <?php endif; ?>
-        <p class="card-title"><?= !empty($nain['g_id']) ? "Membre du groupe n° " . $nain['g_id'] : 'Aucun groupe' ?></p>
+        <?php if (!empty($nain['g_id'])) : ?>
+          <p class="card-title">Membre du <a href="groupe.php?groupe=<?= $nain['g_id'] ?>">groupe n° <?= $nain['g_id'] ?></a></p>
+        <?php else : ?>
+          <p class="card-title">Aucun groupe</p>
+        <?php endif; ?>
       </div>
     </div>
     <form action="" method="post">
@@ -81,7 +96,7 @@ asort($groupes);
               </select>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermez</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
               <button type="submit" class="btn btn-primary">Sauvegarder</button>
             </div>
           </div>

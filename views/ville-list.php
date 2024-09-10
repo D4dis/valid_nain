@@ -37,7 +37,7 @@ try {
       <?php foreach ($villes as $ville) : ?>
         <tr>
           <th scope="row"><?= $ville['v_id'] ?></th>
-          <td><?= $ville['v_nom'] ?></td>
+          <td><a href="ville.php?ville=<?= $ville['v_id'] ?>"><?= $ville['v_nom'] ?></a></td>
         </tr>
       <?php endforeach; ?>
     </tbody>

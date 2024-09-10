@@ -37,7 +37,7 @@ try {
       <?php foreach ($groupes as $groupe) : ?>
         <tr>
           <th scope="row"><?= $groupe['g_id'] ?></th>
-          <td>Groupe n°<?= $groupe['g_id'] ?></td>
+          <td><a href="groupe.php?groupe=<?= $groupe['g_id'] ?>">Groupe n°<?= $groupe['g_id'] ?></a></td>
         </tr>
       <?php endforeach; ?>
     </tbody>
