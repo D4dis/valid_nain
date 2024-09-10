@@ -43,11 +43,21 @@ try {
   $requestTaverne->execute();
   $tavernes = $requestTaverne->fetchAll(PDO::FETCH_ASSOC);
   $requestTaverne->closeCursor();
+
+  $requestTunnel = $pdo->prepare('SELECT v_arrive.v_nom v_arrive, v_arrive.v_id v_id, t_progres
+                            FROM tunnel
+                            LEFT JOIN ville v_arrive ON tunnel.t_villearrivee_fk = v_arrive.v_id
+                            JOIN ville v_depart ON tunnel.t_villedepart_fk = v_depart.v_id
+                            WHERE v_depart.v_id = :ville_id');
+  $requestTunnel->bindValue('ville_id', $ville_id);
+  $requestTunnel->execute();
+  $tunnels = $requestTunnel->fetchAll(PDO::FETCH_ASSOC);
+  $requestTunnel->closeCursor();
 } catch (PDOException $e) {
   die($e->getMessage());
 }
 
-var_dump($tavernes);
+var_dump($tunnels);
 
 ?>
 
@@ -108,4 +118,7 @@ var_dump($tavernes);
       </div>
     </div>
   </div>
+  <?php foreach ($tunnels as $tunnel) : ?>
+    <p class="text-center display-5">Tunnel vers <a href="ville.php?ville=<?= $tunnel['v_id'] ?>"><?= $tunnel['v_arrive'] ?></a> : <?= $tunnel['t_progres'] == 100 ? 'Ouvert' : $tunnel['t_progres'] . ' %' ?> </p>
+  <?php endforeach; ?>
 </div>

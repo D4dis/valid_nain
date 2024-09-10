@@ -38,7 +38,7 @@ asort($groupes);
 
 
 <div class="container">
-  <h1 class="text-center display-2 mb-5">Nain City</h1>
+  <h1 class="text-center display-2 mb-5">Ville de nain</h1>
   <div class="d-flex justify-content-center gap-5">
     <form action="views/nain.php" method="get">
       <div class="card" style="width: 18rem;">
@@ -51,6 +51,7 @@ asort($groupes);
             <?php endforeach; ?>
           </select>
           <div class="d-flex justify-content-center"><button type="sumbit" class="btn btn-primary">Y aller</button></div>
+          <a class="d-flex justify-content-center mt-3 btn btn-primary" href="views/nain-list.php">Liste des nains</a>
         </div>
       </div>
     </form>
@@ -66,6 +67,7 @@ asort($groupes);
             <?php endforeach; ?>
           </select>
           <div class="d-flex justify-content-center"><button type="sumbit" class="btn btn-primary">Y aller</button></div>
+          <a class="d-flex justify-content-center mt-3 btn btn-primary" href="views/ville-list.php">Liste des villes</a>
         </div>
       </div>
     </form>
@@ -81,6 +83,7 @@ asort($groupes);
             <?php endforeach; ?>
           </select>
           <div class="d-flex justify-content-center"><button type="sumbit" class="btn btn-primary">Y aller</button></div>
+          <a class="d-flex justify-content-center mt-3 btn btn-primary" href="views/groupe-list.php">Liste des groupes</a>
         </div>
       </div>
     </form>
@@ -96,6 +99,7 @@ asort($groupes);
             <?php endforeach; ?>
           </select>
           <div class="d-flex justify-content-center"><button type="sumbit" class="btn btn-primary">Y aller</button></div>
+          <a class="d-flex justify-content-center mt-3 btn btn-primary" href="views/taverne-list.php">Liste des tavernes</a>
         </div>
       </div>
     </form>
